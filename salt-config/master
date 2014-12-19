@@ -1,0 +1,12 @@
+file_roots:
+  base:
+    - salt/
+  dev:
+    - salt/
+
+pillar_roots:
+  base:
+    - pillar/
+  dev:
+    - pillar/
+

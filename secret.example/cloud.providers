@@ -1,0 +1,7 @@
+my-digitalocean-config:
+  provider: digital_ocean
+  client_key: client_key
+  api_key: api_key
+  ssh_key_name: digital-ocean-salt-cloud.pub
+  ssh_key_file: /root/.ssh/digital-ocean-salt-cloud
+  location: London 1

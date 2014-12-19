@@ -1,0 +1,26 @@
+digitalocean-ubuntu-small:
+    provider: my-digitalocean-config
+    image: 14.10 x64
+    size: 512MB
+    location: London 1
+    private_networking: True
+    backups_enabled: False
+    ipv6: True
+
+digitalocean-ubuntu-small-lts:
+    provider: my-digitalocean-config
+    image: 14.04 x64
+    size: 512MB
+    location: London 1
+    private_networking: True
+    backups_enabled: False
+    ipv6: True
+
+digitalocean-ubuntu:
+    provider: my-digitalocean-config
+    image: 14.10 x64
+    size: 1GB
+    location: London 1
+    private_networking: True
+    backups_enabled: False
+    ipv6: True
