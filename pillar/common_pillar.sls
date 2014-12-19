@@ -1,0 +1,1 @@
+../secret/pillar/common_pillar.sls
