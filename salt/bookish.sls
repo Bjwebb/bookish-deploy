@@ -18,34 +18,32 @@ docker-py:
 
 # https://github.com/saltstack/salt/issues/15803
 
-bjwebb/bookish:
+bjwebb/bookish-demo:
     docker.pulled:
-      - tag: latest-demo
+      - tag: latest
       - require:
         - pip: docker-py
 
 docker_bookishdemo_stop_if_old:
   cmd.run:
     - name: docker stop bookishdemo
-    - unless: docker inspect --format "\{\{ .Image \}\}" bookishdemo | grep $(docker images | grep "bjwebb/bookish:latest-demo" | awk '{ print $3 }')
+    - unless: docker inspect --format "\{\{ .Image \}\}" bookishdemo | grep $(docker images | grep "bjwebb/bookish-demo:latest" | awk '{ print $3 }')
     - require:
-      - docker: bjwebb/bookish
+      - docker: bjwebb/bookish-demo
 
 docker_bookishdemo_remove_if_old:
   cmd.run:
     - name: docker rm bookishdemo
-    - unless: docker inspect --format "\{\{ .Image \}\}" bookishdemo | grep $(docker images | grep "bjwebb/bookish:latest-demo" | awk '{ print $3 }')
+    - unless: docker inspect --format "\{\{ .Image \}\}" bookishdemo | grep $(docker images | grep "bjwebb/bookish-demo:latest" | awk '{ print $3 }')
     - require:
       - cmd: docker_bookishdemo_stop_if_old
 
 bookishdemo-container:
   docker.installed:
     - name: bookishdemo
-    - image: bjwebb/bookish:latest-demo
+    - image: bjwebb/bookish-demo:latest
     - environment:
-      - SECRET_KEY: 'c9a7789b3e18f89c93efcbbb3072671bfa7b1d02474b5d02c747ffc9a8146768'
-      - DATABASE_URL: 'sqlite:///demo.db'
-      - DEBUG: 'True'
+      - SENTRY_DSN: {{ pillar.get('sentry_dsn') }}
     - require:
       - cmd: docker_bookishdemo_remove_if_old
 
