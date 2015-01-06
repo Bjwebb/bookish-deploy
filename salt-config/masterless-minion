@@ -1,0 +1,3 @@
+# This file is for masterless minions e.g. using Vagrant
+
+file_client: local
