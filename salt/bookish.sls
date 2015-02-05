@@ -23,18 +23,23 @@ bjwebb/bookish-demo:
       - tag: latest
       - require:
         - pip: docker-py
+      - force: True
 
 docker_bookishdemo_stop_if_old:
   cmd.run:
     - name: docker stop bookishdemo
-    - unless: docker inspect --format "\{\{ .Image \}\}" bookishdemo | grep $(docker images | grep "bjwebb/bookish-demo:latest" | awk '{ print $3 }')
+{% raw %}
+    - unless: docker inspect --format "{{ .Image }}" bookishdemo | grep $(docker images | grep "bjwebb/bookish-demo" | awk '{ print $3 }')
+{% endraw %}
     - require:
       - docker: bjwebb/bookish-demo
 
 docker_bookishdemo_remove_if_old:
   cmd.run:
     - name: docker rm bookishdemo
-    - unless: docker inspect --format "\{\{ .Image \}\}" bookishdemo | grep $(docker images | grep "bjwebb/bookish-demo:latest" | awk '{ print $3 }')
+{% raw %}
+    - unless: docker inspect --format "{{ .Image }}" bookishdemo | grep $(docker images | grep "bjwebb/bookish-demo" | awk '{ print $3 }')
+{% endraw %}
     - require:
       - cmd: docker_bookishdemo_stop_if_old
 
