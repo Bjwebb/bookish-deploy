@@ -15,8 +15,9 @@ docker-py:
     - name: python-pip
   pip.installed:
     - name: docker_py>=0.5,<0.6
-
-# https://github.com/saltstack/salt/issues/15803
+    # Ensure that salt has access to this new module
+    # https://github.com/saltstack/salt/issues/15803#issuecomment-72244667
+    - reload_modules: True
 
 bjwebb/bookish-demo:
     docker.pulled:
@@ -25,11 +26,14 @@ bjwebb/bookish-demo:
         - pip: docker-py
       - force: True
 
+# http://jacksoncage.se/posts/2014/10/01/use-salt-to-manage-and-deploy-docker-containers/
+
 docker_bookishdemo_stop_if_old:
   cmd.run:
     - name: docker stop bookishdemo
 {% raw %}
-    - unless: docker inspect --format "{{ .Image }}" bookishdemo | grep $(docker images | grep "bjwebb/bookish-demo" | awk '{ print $3 }')
+    - onlyif:
+      - docker inspect --format "{{ .Image }}" bookishdemo && ! docker inspect --format "{{ .Image }}" bookishdemo | grep $(docker images | grep "bjwebb/bookish-demo" | awk '{ print $3 }')
 {% endraw %}
     - require:
       - docker: bjwebb/bookish-demo
@@ -38,7 +42,8 @@ docker_bookishdemo_remove_if_old:
   cmd.run:
     - name: docker rm bookishdemo
 {% raw %}
-    - unless: docker inspect --format "{{ .Image }}" bookishdemo | grep $(docker images | grep "bjwebb/bookish-demo" | awk '{ print $3 }')
+    - onlyif:
+      - docker inspect --format "{{ .Image }}" bookishdemo && ! docker inspect --format "{{ .Image }}" bookishdemo | grep $(docker images | grep "bjwebb/bookish-demo" | awk '{ print $3 }')
 {% endraw %}
     - require:
       - cmd: docker_bookishdemo_stop_if_old

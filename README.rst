@@ -21,7 +21,12 @@ To create a VPS called bookishdemo on Digitalocean:
 .. code:: bash
 
     salt-cloud --profile digitalocean-ubuntu-small bookishdemo
-    salt bookishdemo state.sls bookish
+
+To update this VPS with the latest docker image (this should be included in the above command by the `start_action` setting in the `cloud` configuration file):
+
+.. code:: bash
+
+    salt bookishdemo state.highstate
 
 To delete the VPS later:
 

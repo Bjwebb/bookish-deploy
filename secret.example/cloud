@@ -1,2 +1,5 @@
 minion:
   master: domainnameofyourmaster.com
+
+start_action: state.highstate
+
