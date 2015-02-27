@@ -1,3 +1,7 @@
+uptodate:
+  pkg.uptodate:
+    - refresh: True
+
 docker-installed:
     pkg.installed:
         - name: docker.io
