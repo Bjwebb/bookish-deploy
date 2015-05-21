@@ -1,4 +1,4 @@
 schedule:
   highstate:
     function: state.highstate
-    minutes: 5
+    minutes: 60
